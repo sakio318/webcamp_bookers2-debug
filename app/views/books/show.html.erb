@@ -1,6 +1,18 @@
 <div class='container'>
   <div class='row'>
-    <div class='col-md-3'>
+      <div class='col-md-3'>
+    <% if @book.errors.any? %>
+        <div id="errors_explanation" class="alert alert-danger">
+          <p>error</p>
+            <%= @book.errors.count %>件のエラーが発生しました
+            <ul>
+              <% @book.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+            <% end %>
+            </ul>
+        </div>
+      <% end %>
+
       <h2>User info</h2>
       <%= render 'users/info',user: @books.user %>
 
@@ -19,8 +31,10 @@
           </td>
           <td><%= link_to @books.title, book_path(@books) %></td>
           <td><%= @books.body %></td>
-          <td><%= link_to 'Edit', edit_book_path(@books), class: "btn btn-sm btn-success edit_book_#{@books.id}" %></td>
-          <td><%= link_to 'Destroy', book_path(@books), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_book_#{@book.id}"%></td>
+          <% if @books.user == current_user %>
+            <td><%= link_to 'Edit', edit_book_path(@books), class: "btn btn-sm btn-success edit_book_#{@books.id}" %></td>
+            <td><%= link_to 'Destroy', book_path(@books), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_book_#{@book.id}"%></td>
+          <% end %>
         </tr>
       </table>
     </div>
